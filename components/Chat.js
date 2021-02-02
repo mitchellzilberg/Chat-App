@@ -1,5 +1,9 @@
 import React from 'react';
-import { View, Text, Button, TextInput, StyleSheet } from 'react-native';
+import {Bubble, GiftedChat} from 'react-native-gifted-chat';
+import { ThemeColors } from 'react-navigation';
+import { 
+    View, Text, Button, TextInput, StyleSheet, Platform, KeyboardAvoidingView
+} from 'react-native';
 
 export default class Chat extends React.Component {
 
@@ -8,7 +12,56 @@ export default class Chat extends React.Component {
         this.state= {
             name: '',
             color: '',
-        };
+            messages: [],
+        }
+    }
+
+    componentDidMount() {
+        this.setState({
+            messages: [
+                // user message beloww
+                {
+                    _id: 1,
+                    text: 'Hello developer',
+                    createdAt: new Date(),
+                    user: {
+                        _id: 2,
+                        name: 'React Native',
+                        avatar: '',
+                    },
+                },
+                // System message below 
+                {
+                    _id: 2,
+                    text: 'You have entered the chat', 
+                    createdAt: new Date(),
+                    system: true
+                },
+            ],
+        })
+    }
+
+    onSend(messages = []) {
+        this.setState((previousState) => ({
+            messages: GiftedChat.append(previousState.messages, messages),
+        }));
+    }
+
+    // Speech bubble customization
+    renderBubble(props) {
+        return (
+            <Bubble
+                {...props}
+                wrapperStyle={{
+                    right: {
+                        backgroundColor: 'blue',
+                    },
+                    left: {
+                        backgroundColor: 'yellow'
+                    }
+                }}
+            />    
+        );
     }
 
     render() {
@@ -18,21 +71,29 @@ export default class Chat extends React.Component {
         this.props.navigation.setOptions({title: name});
 
         return (
-            <View style={[styles.container, {backgroundColor: color}]}>
-                <Text>Hello Screen 2!</Text>
-                <Button
-                    title='Go to home page'
-                    onPress={() => this.props.navigation.navigate('Start')}
+            <View style={{flex: 1}}>
+                <GiftedChat
+                    renderBubble={this.renderBubble.bind(this)}
+                    messages={this.state.messages}
+                    onSend={(messages) => this.onSend(messages)}
+                    user={{
+                        _id: 1,
+                    }}
                 />
+                { Platform.OS === 'android' ? <KeyboardAvoidingView behavior='height' /> : null}
             </View>
         );
     };
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1, 
-        justifyContent: 'center', 
-        alignItems: 'center',
-    }
-})
+
+{/* <TouchableOpacity
+  accessible={true}
+  accessibilityLabel="More options"
+  accessibilityHint="Lets you choose to send an image or your geolocation."
+  accessibilityRole="button"
+  onPress={this._onPress}>
+  <View style={styles.button}>
+   ...
+  </View>
+</TouchableOpacity> */}

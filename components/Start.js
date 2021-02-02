@@ -1,6 +1,6 @@
 import React from 'react'; 
 import {
-    View, Text, Button, TextInput, StyleSheet, ImageBackground, TouchableOpacity
+    View, Text, Button, TextInput, StyleSheet, ImageBackground, TouchableOpacity, 
 } from 'react-native'; 
 
 const image = require('../assets/BackgroundImage.png');
