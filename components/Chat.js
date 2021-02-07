@@ -7,7 +7,7 @@ import { Bubble, GiftedChat, InputToolbar } from 'react-native-gifted-chat';
 import { NavigationEvents } from 'react-navigation';
 import MapView from 'react-native-maps';
 import CustomActions from './CustomActions';
-import { Constants, MapView, Location, Permissions } from 'expo';
+// import { Constants, MapView, Location, Permissions } from 'expo';
 
 // importing and establishing a connection to Firestore
 const firebase = require('firebase');
