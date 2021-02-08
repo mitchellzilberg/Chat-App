@@ -42,24 +42,46 @@ export default class CustomActions extends React.Component {
     }
   }
 
+  // getLocation = async () => {
+  //   const { status } = await Permissions.askAsync(Permissions.LOCATION);
+
+  //   if(status === 'granted') {
+  //     let result = await Location.getCurrentPositionAsync({});
+
+  //     const longitude = JSON.stringify(result.coords.longitude);
+  //     const latitude = JSON.stringify(result.coords.latitude);
+
+  //     if(result) {
+  //       this.props.onSend({
+  //         location: {
+  //           longitude: longitude,
+  //           latitude: latitude,
+  //         },
+  //         text: ""
+  //       });
+  //     }
+  //   }
+  // }
+
   getLocation = async () => {
-    const { status } = await Permissions.askAsync(Permissions.LOCATION);
+    try {
+      const { status } = await Permissions.askAsync(Permissions.LOCATION);
 
-    if(status === 'granted') {
-      let result = await Location.getCurrentPositionAsync({});
+      if (status === 'granted') {
+        const result = await Location.getCurrentPositionAsync({});
 
-      const longitude = JSON.stringify(result.coords.longitude);
-      const latitude = JSON.stringify(result.coords.latitude);
-
-      if(result) {
-        this.props.onSend({
-          location: {
-            longitude: longitude,
-            latitude: latitude,
-          },
-          text: ""
-        });
+        if (result) {
+          this.props.onSend({
+            location: {
+              longitude: result.coords.longitude,
+              latitude: result.coords.latitude,
+            },
+            text: ''
+          });
+        }
       }
+    } catch (error) {
+      console.log(error.message);
     }
   }
 
